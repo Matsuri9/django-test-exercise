@@ -1,38 +1,107 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ja">
-
-  <head>
+<head>
     <title>To Do Application</title>
     <meta charset="UTF-8">
     <meta name="author" content="INIAD">
-  </head>
-
-  <body>
-    <h1>{{ task.title }}</h1>
-    <ul>
-      <li>Posted at: {{ task.posted_at }}</li>
-      {% if task.due_at %}
-      <li>Due at: {{ task.due_at }}</li>
-      {% endif %}
-      {% if task.priority %}
-      <li>Priority: {{ task.priority }}</li>
-      {% else %}
-      <li>Priority: unspecified </li>
-      {% endif %}
-      {% if task.completed %}
-      <li>Status: Completed</li>
-      {% else %}
-      <li>Status: Not Completed</li>
-      {% endif %}
-    </ul>
-
-    <div>
-      <a href="{% url 'index' %}">Top</a>
-        <a href="{% url 'delete' task.id %}">Delete</a>
-        <a href="{% url 'update' task.id %}">Edit</a>
-        <a href="{% url 'close'  task.id %}">Close</a>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            margin-bottom: 15px;
+            font-size: 1.1em;
+            color: #555;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+        .completed {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .not-completed {
+            background-color: #FFC107;
+            color: black;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 30px;
+        }
+        .button {
+            text-decoration: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        .button:hover {
+            transform: translateY(-3px);
+        }
+        .top { background-color: #3498db; }
+        .delete { background-color: #e74c3c; }
+        .edit { background-color: #2ecc71; }
+    </style>
+</head>
+<body>
+    <div class="container animate__animated animate__fadeIn">
+        <h1 class="animate__animated animate__bounceIn">{{ task.title }}</h1>
+        <ul>
+            <li><strong>投稿日時:</strong> {{ task.posted_at }}</li>
+            {% if task.due_at %}
+                <li><strong>期限:</strong> {{ task.due_at }}</li>
+            {% endif %}
+            <li>
+                <strong>ステータス:</strong> 
+                {% if task.completed %}
+                    <span class="status completed">完了</span>
+                {% else %}
+                    <span class="status not-completed">未完了</span>
+                {% endif %}
+            </li>
+        </ul>
+        <div class="button-container">
+            <a href="{% url 'index' %}" class="button top animate__animated animate__pulse">トップへ戻る</a>
+            <a href="{% url 'delete' task.id %}" class="button delete animate__animated animate__pulse">削除</a>
+            <a href="{% url 'update' task.id %}" class="button edit animate__animated animate__pulse">編集</a>
+        </div>
     </div>
-  </body>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow.js/1.1.2/wow.min.js"></script>
+    <script>
+        new WOW().init();
+    </script>
+</body>
 </html>
