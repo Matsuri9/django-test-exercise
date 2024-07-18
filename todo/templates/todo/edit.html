@@ -22,6 +22,10 @@
         <input id="dueInput" name="due_at" type="datetime-local" value="{{ task.due_at |date:"Y-m-d H:i" }}">
       </div>
       <div>
+        <label for="priorityInput">priority:</label><br>
+        <input id="priorityInput" name="priority" type="range" min="1" max="5">
+      </div>
+      <div>
         <button type="submit">Submit</button>
       </div>
     </form>
