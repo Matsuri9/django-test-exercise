@@ -7,14 +7,14 @@ from todo.models import Task
 # Create your views here.
 def index(request):
     if request.method == 'POST':
-        task = Task(title=request.POST['title'],
-                    due_at=make_aware(parse_datetime(request.POST['due_at'])),
-                    priority=int(request.POST['priority']))
-        
+        task = Task(title=request.POST['title'], due_at=make_aware(parse_datetime(request.POST['due_at'])), priority=int(request.POST['priority']))
         task.save()
     
     if request.GET.get('order') == 'due':
         tasks = Task.objects.order_by('due_at')
+    
+    elif request.GET.get('order') == 'priority':
+        tasks = Task.objects.order_by('-priority')
     
     else:
         tasks = Task.objects.order_by('-posted_at')
