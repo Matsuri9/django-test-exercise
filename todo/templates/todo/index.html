@@ -1,7 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="ja">
-
 <head>
     <title>To Do Application</title>
     <meta charset="UTF-8">
@@ -18,7 +17,6 @@
         }
     </script>
 </head>
-
 <body>
     <div class="container">
         <h1>Sample To Do Application</h1>
@@ -42,13 +40,11 @@
             </div>
         </form>
         <br>
-
         <div class="sort-links">
             <a href="{% url 'index' %}?order=due">Sort by Due Date</a> | 
             <a href="{% url 'index' %}?order=post">Sort by Posted Date</a> | 
             <a href="{% url 'index' %}?order=priority">Sort by Priority</a>
         </div>
-
         <h2>Uncompleted Tasks</h2>
         <div class="task-list uncompleted-tasks">
             {% for task in uncompleted_tasks %}
@@ -69,7 +65,6 @@
             </div>
             {% endfor %}
         </div>
-
         <h2>
             <a href="javascript:void(0)" class="toggle-button" onclick="toggleCompletedTasks()">Completed Tasks</a>
         </h2>
@@ -94,5 +89,4 @@
         </div>
     </div>
 </body>
-
 </html>
