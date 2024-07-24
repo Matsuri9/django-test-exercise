@@ -4,11 +4,15 @@ from django.utils.dateparse import parse_datetime
 from django.http import Http404
 from todo.models import Task
 
-# Create your views here.
 def index(request):
     if request.method == 'POST':
-        task = Task(title=request.POST['title'], due_at=make_aware(parse_datetime(request.POST['due_at'])), priority=int(request.POST['priority']))
+        task = Task(
+            title=request.POST['title'],
+            due_at=make_aware(parse_datetime(request.POST['due_at'])),
+            priority=int(request.POST['priority'])
+        )
         task.save()
+        return redirect('index')  # リダイレクトを追加
 
     order_by = request.GET.get('order', 'posted_at')
     if order_by == 'due':
