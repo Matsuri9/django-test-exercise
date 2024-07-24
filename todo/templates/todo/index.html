@@ -2,62 +2,97 @@
 <!DOCTYPE html>
 <html lang="ja">
 
-  <head>
+<head>
     <title>To Do Application</title>
     <meta charset="UTF-8">
     <meta name="author" content="INIAD">
-  </head>
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <script>
+        function toggleCompletedTasks() {
+            var completedTasks = document.getElementById('completed-tasks');
+            if (completedTasks.style.display === 'none') {
+                completedTasks.style.display = 'block';
+            } else {
+                completedTasks.style.display = 'none';
+            }
+        }
+    </script>
+</head>
 
-  <body>
-    <h1>Sample To Do Application</h1>
-    <p>You can submit tasks from the following form.</p>
-    <form action="{% url 'index' %}" method="post">
-      {% csrf_token %}
-      <div>
-        <label for="titleInput">Title</label><br>
-        <input id="titleInput" name="title" type="text" placeholder="Input title">
-      </div>
-      <div>
-        <label for="dueInput">Due at:</label><br>
-        <input id="dueInput" name="due_at" type="datetime-local">
-      </div>
-      <div>
-        <label for="priorityInput">priority:</label><br>
-        <input id="priorityInput" name="priority" type="range" min="1" max="5">
-      </div>
-      <div>
-        <button type="submit">Submit</button>
-      </div>
-    </form>
-    <br>
+<body>
+    <div class="container">
+        <h1>Sample To Do Application</h1>
+        <p>You can submit tasks from the following form.</p>
+        <form action="{% url 'index' %}" method="post" class="task-form">
+            {% csrf_token %}
+            <div>
+                <label for="titleInput">Title</label><br>
+                <input id="titleInput" name="title" type="text" placeholder="Input title">
+            </div>
+            <div>
+                <label for="dueInput">Due at:</label><br>
+                <input id="dueInput" name="due_at" type="datetime-local">
+            </div>
+            <div>
+                <label for="priorityInput">priority:</label><br>
+                <input id="priorityInput" name="priority" type="range" min="1" max="5">
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+        <br>
 
-    <div>
-      <a href="{% url 'index' %}?order=due">Sort by Due Date</a> | 
-      <a href="{% url 'index' %}?order=post">Sort by Posted Date</a> | 
-      <a href="{% url 'index' %}?order=priority">Sort by Priority</a>
+        <div class="sort-links">
+            <a href="{% url 'index' %}?order=due">Sort by Due Date</a> | 
+            <a href="{% url 'index' %}?order=post">Sort by Posted Date</a> | 
+            <a href="{% url 'index' %}?order=priority">Sort by Priority</a>
+        </div>
+
+        <h2>Uncompleted Tasks</h2>
+        <div class="task-list uncompleted-tasks">
+            {% for task in uncompleted_tasks %}
+            <div class="task">
+                <h3><a href="{% url 'detail' task.id %}">{{ task.title }}</a></h3>
+                <ul>
+                    <li>Posted at: {{ task.posted_at }}</li>
+                    {% if task.due_at %} 
+                    <li>Due at: {{ task.due_at }}</li>
+                    {% endif %}
+                    {% if task.priority %}
+                    <li>Priority: {{ task.priority }}</li>
+                    {% else %}
+                    <li>Priority: unspecified </li>
+                    {% endif %}
+                    <li>Status: Not Completed</li>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+
+        <h2>
+            <a href="javascript:void(0)" class="toggle-button" onclick="toggleCompletedTasks()">Completed Tasks</a>
+        </h2>
+        <div id="completed-tasks" class="task-list completed-tasks" style="display: none;">
+            {% for task in completed_tasks %}
+            <div class="task">
+                <h3><a href="{% url 'detail' task.id %}">{{ task.title }}</a></h3>
+                <ul>
+                    <li>Posted at: {{ task.posted_at }}</li>
+                    {% if task.due_at %} 
+                    <li>Due at: {{ task.due_at }}</li>
+                    {% endif %}
+                    {% if task.priority %}
+                    <li>Priority: {{ task.priority }}</li>
+                    {% else %}
+                    <li>Priority: unspecified </li>
+                    {% endif %}
+                    <li>Status: Completed</li>
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-
-    {% for task in tasks %}
-    <div class="text">
-      <h2><a href="{% url 'detail' task.id %}">{{ task.title }}</a></h2>
-      <ul>
-        <li>Posted at: {{ task.posted_at }}</li>
-        {% if task.due_at %} 
-        <li>Due at: {{ task.due_at }}</li>
-        {% endif %}
-        {% if task.priority %}
-        <li>Priority: {{ task.priority }}</li>
-        {% else %}
-        <li>Priority: unspecified </li>
-        {% endif %}
-        {% if task.completed %} 
-        <li>Status: Completed</li>
-        {% else %}
-        <li>Status: Not Completed</li>
-        {% endif %}
-      </ul>
-    </div>
-    {% endfor %}
-  </body>
+</body>
 
 </html>
